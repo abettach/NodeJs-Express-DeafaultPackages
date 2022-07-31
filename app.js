@@ -5,6 +5,12 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 
+app.use(express.json()); // fix the empty returned object probleme
+
+const My = require('./models/mySchema')
+
+var cors = require('cors'); // fix cors probleme when posting data
+app.use(cors())
 /*******************For Auto refresh *****************************/
 const path = require("path");
 const livereload = require("livereload");
@@ -22,16 +28,15 @@ liveReloadServer.server.once("connection", () => {
 }); 
 
 /****************************************************************/
-/*******************Connect DataBase using mongoose*****************************/
+/*******************Connect DataBase*****************************/
 
 const mongoose = require('mongoose');
  
-mongoose
-  .connect("connection link")
+mongoose.connect("link to connect with mongodb")
   .then( result => {
     app.listen(port, () => {
-      console.log(`Example app listening at http://localhost:${port}`)
-    })
+        console.log(`Example app listening at http://localhost:${port}`)
+      })
   })
   .catch( err => {
     console.log(err);
@@ -39,7 +44,13 @@ mongoose
 /****************************************************************/
 
 app.get('/', (req, res) => {
-  res.send('Welome')
+  res.render('index')
+})
+
+
+app.post("/my-path", (req, res) => {
+    const article = new My(req.body);
+    console.log(req.body);
 })
 
 app.use((req, res) => {
