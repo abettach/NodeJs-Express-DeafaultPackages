@@ -1,6 +1,9 @@
 const express = require('express')
 const app = express()
 const port = 3001
+app.set("view engine", "ejs");
+app.use(express.static("public"));
+app.use(express.urlencoded({ extended: true }));
 
 /*******************For Auto refresh *****************************/
 const path = require("path");
@@ -19,13 +22,16 @@ liveReloadServer.server.once("connection", () => {
 }); 
 
 /****************************************************************/
-/*******************Connect DataBase*****************************/
+/*******************Connect DataBase using mongoose*****************************/
 
 const mongoose = require('mongoose');
  
-mongoose.connect("connection link")
+mongoose
+  .connect("connection link")
   .then( result => {
-    app.listen(3000);
+    app.listen(port, () => {
+      console.log(`Example app listening at http://localhost:${port}`)
+    })
   })
   .catch( err => {
     console.log(err);
@@ -39,8 +45,3 @@ app.get('/', (req, res) => {
 app.use((req, res) => {
     res.status(404).send("Sorry can't find that!");
 });
-
-
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
-})
