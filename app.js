@@ -32,7 +32,7 @@ liveReloadServer.server.once("connection", () => {
 
 const mongoose = require('mongoose');
  
-mongoose.connect("mongodb+srv://root:root@cluster0.g8oqkdb.mongodb.net/?retryWrites=true&w=majority")
+mongoose.connect("Your Connection URL");
   .then( result => {
     app.listen(port, () => {
         console.log(`Example app listening at http://localhost:${port}`)
